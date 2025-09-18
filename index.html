@@ -95,37 +95,21 @@
         .question-text {
             font-size: 20px;
             color: #1f2937;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             line-height: 1.5;
+        }
+
+        .instruction-text {
+            font-size: 14px;
+            color: #667eea;
+            font-style: italic;
+            margin-bottom: 20px;
         }
 
         .options {
             display: flex;
             flex-direction: column;
             gap: 12px;
-        }
-
-        .option {
-            padding: 16px 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            color: #4b5563;
-        }
-
-        .option:hover {
-            border-color: #667eea;
-            background: #f9fafb;
-            transform: translateX(5px);
-        }
-
-        .option.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea15, #764ba215);
-            color: #1f2937;
-            font-weight: 500;
         }
 
         .checkbox-option {
@@ -136,16 +120,21 @@
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-size: 16px;
+            color: #4b5563;
         }
 
         .checkbox-option:hover {
             border-color: #667eea;
             background: #f9fafb;
+            transform: translateX(5px);
         }
 
         .checkbox-option.checked {
             border-color: #667eea;
             background: linear-gradient(135deg, #667eea15, #764ba215);
+            color: #1f2937;
+            font-weight: 500;
         }
 
         .checkbox-option input[type="checkbox"] {
@@ -153,6 +142,7 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
+            accent-color: #667eea;
         }
 
         .navigation {
@@ -269,7 +259,7 @@
                 font-size: 18px;
             }
             
-            .option {
+            .checkbox-option {
                 font-size: 15px;
                 padding: 14px 16px;
             }
@@ -291,11 +281,24 @@
         <div class="question-section active" data-question="1">
             <div class="question-number">Question 1 of 10</div>
             <div class="question-text">How many hours per week does your team spend on repetitive admin tasks?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="1">Less than 5 hours</div>
-                <div class="option" data-value="2">5-10 hours</div>
-                <div class="option" data-value="3">10-20 hours</div>
-                <div class="option" data-value="4">More than 20 hours</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q1-1" value="Less than 5 hours">
+                    <label for="q1-1">Less than 5 hours</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q1-2" value="5-10 hours">
+                    <label for="q1-2">5-10 hours</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q1-3" value="10-20 hours">
+                    <label for="q1-3">10-20 hours</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q1-4" value="More than 20 hours">
+                    <label for="q1-4">More than 20 hours</label>
+                </div>
             </div>
         </div>
 
@@ -303,11 +306,24 @@
         <div class="question-section" data-question="2">
             <div class="question-number">Question 2 of 10</div>
             <div class="question-text">What's your biggest daily frustration?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="1">Answering the same customer questions repeatedly</div>
-                <div class="option" data-value="2">Keeping track of client information across different platforms</div>
-                <div class="option" data-value="3">Managing appointments and schedules</div>
-                <div class="option" data-value="4">Following up with leads and customers</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q2-1" value="Answering repeated questions">
+                    <label for="q2-1">Answering the same customer questions repeatedly</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q2-2" value="Tracking client info">
+                    <label for="q2-2">Keeping track of client information across different platforms</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q2-3" value="Managing appointments">
+                    <label for="q2-3">Managing appointments and schedules</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q2-4" value="Following up">
+                    <label for="q2-4">Following up with leads and customers</label>
+                </div>
             </div>
         </div>
 
@@ -315,23 +331,49 @@
         <div class="question-section" data-question="3">
             <div class="question-number">Question 3 of 10</div>
             <div class="question-text">How do you currently handle new client inquiries?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="1">Phone calls and manual note-taking</div>
-                <div class="option" data-value="2">Basic email responses</div>
-                <div class="option" data-value="3">Online forms (Google Forms, etc.)</div>
-                <div class="option" data-value="4">We often miss inquiries</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q3-1" value="Phone and manual notes">
+                    <label for="q3-1">Phone calls and manual note-taking</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q3-2" value="Basic email">
+                    <label for="q3-2">Basic email responses</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q3-3" value="Online forms">
+                    <label for="q3-3">Online forms (Google Forms, etc.)</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q3-4" value="Often miss inquiries">
+                    <label for="q3-4">We often miss inquiries</label>
+                </div>
             </div>
         </div>
 
         <!-- Question 4 -->
         <div class="question-section" data-question="4">
             <div class="question-number">Question 4 of 10</div>
-            <div class="question-text">Which area would save you the most time if automated?</div>
+            <div class="question-text">Which areas would save you the most time if automated?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="1">Email responses and follow-ups</div>
-                <div class="option" data-value="2">Invoice and payment reminders</div>
-                <div class="option" data-value="3">Appointment scheduling</div>
-                <div class="option" data-value="4">Customer data organization</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q4-1" value="Email automation">
+                    <label for="q4-1">Email responses and follow-ups</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q4-2" value="Invoice reminders">
+                    <label for="q4-2">Invoice and payment reminders</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q4-3" value="Appointment scheduling">
+                    <label for="q4-3">Appointment scheduling</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q4-4" value="Data organization">
+                    <label for="q4-4">Customer data organization</label>
+                </div>
             </div>
         </div>
 
@@ -339,11 +381,24 @@
         <div class="question-section" data-question="5">
             <div class="question-number">Question 5 of 10</div>
             <div class="question-text">What's your monthly budget for business tools and software?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="1">Under R1,000</div>
-                <div class="option" data-value="2">R1,000 - R5,000</div>
-                <div class="option" data-value="3">R5,000 - R10,000</div>
-                <div class="option" data-value="4">Over R10,000</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q5-1" value="Under R1,000">
+                    <label for="q5-1">Under R1,000</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q5-2" value="R1,000-R5,000">
+                    <label for="q5-2">R1,000 - R5,000</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q5-3" value="R5,000-R10,000">
+                    <label for="q5-3">R5,000 - R10,000</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q5-4" value="Over R10,000">
+                    <label for="q5-4">Over R10,000</label>
+                </div>
             </div>
         </div>
 
@@ -351,11 +406,24 @@
         <div class="question-section" data-question="6">
             <div class="question-number">Question 6 of 10</div>
             <div class="question-text">How comfortable is your team with learning new technology?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="4">Very comfortable - we love new tools</div>
-                <div class="option" data-value="3">Somewhat comfortable - willing to learn</div>
-                <div class="option" data-value="2">Nervous but open to simple solutions</div>
-                <div class="option" data-value="1">Prefer to stick with what we know</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q6-1" value="Very comfortable">
+                    <label for="q6-1">Very comfortable - we love new tools</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q6-2" value="Somewhat comfortable">
+                    <label for="q6-2">Somewhat comfortable - willing to learn</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q6-3" value="Nervous but open">
+                    <label for="q6-3">Nervous but open to simple solutions</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q6-4" value="Prefer current tools">
+                    <label for="q6-4">Prefer to stick with what we know</label>
+                </div>
             </div>
         </div>
 
@@ -363,11 +431,24 @@
         <div class="question-section" data-question="7">
             <div class="question-number">Question 7 of 10</div>
             <div class="question-text">What would success look like for you in 6 months?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="2">More time to focus on growing the business</div>
-                <div class="option" data-value="2">Better customer satisfaction</div>
-                <div class="option" data-value="2">Reduced operational costs</div>
-                <div class="option" data-value="4">All of the above</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q7-1" value="More time for growth">
+                    <label for="q7-1">More time to focus on growing the business</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q7-2" value="Better satisfaction">
+                    <label for="q7-2">Better customer satisfaction</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q7-3" value="Reduced costs">
+                    <label for="q7-3">Reduced operational costs</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q7-4" value="All of the above">
+                    <label for="q7-4">All of the above</label>
+                </div>
             </div>
         </div>
 
@@ -375,34 +456,48 @@
         <div class="question-section" data-question="8">
             <div class="question-number">Question 8 of 10</div>
             <div class="question-text">How many customer interactions does your business handle weekly?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="1">Under 20</div>
-                <div class="option" data-value="2">20-50</div>
-                <div class="option" data-value="3">50-100</div>
-                <div class="option" data-value="4">Over 100</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q8-1" value="Under 20">
+                    <label for="q8-1">Under 20</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q8-2" value="20-50">
+                    <label for="q8-2">20-50</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q8-3" value="50-100">
+                    <label for="q8-3">50-100</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q8-4" value="Over 100">
+                    <label for="q8-4">Over 100</label>
+                </div>
             </div>
         </div>
 
         <!-- Question 9 -->
         <div class="question-section" data-question="9">
             <div class="question-number">Question 9 of 10</div>
-            <div class="question-text">Do you currently use any of these tools? (Check all that apply)</div>
+            <div class="question-text">Do you currently use any of these tools?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
                 <div class="checkbox-option">
-                    <input type="checkbox" id="whatsapp" value="WhatsApp Business">
-                    <label for="whatsapp">WhatsApp Business</label>
+                    <input type="checkbox" id="q9-1" value="WhatsApp Business">
+                    <label for="q9-1">WhatsApp Business</label>
                 </div>
                 <div class="checkbox-option">
-                    <input type="checkbox" id="email" value="Email marketing platform">
-                    <label for="email">Email marketing platform</label>
+                    <input type="checkbox" id="q9-2" value="Email marketing platform">
+                    <label for="q9-2">Email marketing platform</label>
                 </div>
                 <div class="checkbox-option">
-                    <input type="checkbox" id="crm" value="CRM system">
-                    <label for="crm">CRM system</label>
+                    <input type="checkbox" id="q9-3" value="CRM system">
+                    <label for="q9-3">CRM system</label>
                 </div>
                 <div class="checkbox-option">
-                    <input type="checkbox" id="none" value="None">
-                    <label for="none">None of the above</label>
+                    <input type="checkbox" id="q9-4" value="None">
+                    <label for="q9-4">None of the above</label>
                 </div>
             </div>
         </div>
@@ -411,11 +506,24 @@
         <div class="question-section" data-question="10">
             <div class="question-number">Question 10 of 10</div>
             <div class="question-text">When would you want to implement AI solutions?</div>
+            <div class="instruction-text">Select all that apply</div>
             <div class="options">
-                <div class="option" data-value="4">Immediately</div>
-                <div class="option" data-value="3">Within 1-3 months</div>
-                <div class="option" data-value="2">Within 6 months</div>
-                <div class="option" data-value="1">Just exploring options</div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q10-1" value="Immediately">
+                    <label for="q10-1">Immediately</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q10-2" value="Within 1-3 months">
+                    <label for="q10-2">Within 1-3 months</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q10-3" value="Within 6 months">
+                    <label for="q10-3">Within 6 months</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="q10-4" value="Just exploring">
+                    <label for="q10-4">Just exploring options</label>
+                </div>
             </div>
         </div>
 
@@ -451,31 +559,7 @@
         const totalQuestions = 10;
         const answers = {};
 
-        // Handle regular option selection
-        document.querySelectorAll('.option').forEach(option => {
-            option.addEventListener('click', function() {
-                const questionSection = this.closest('.question-section');
-                const questionNum = questionSection.dataset.question;
-                
-                if (questionNum !== '9') { // Not the checkbox question
-                    // Remove previous selection
-                    questionSection.querySelectorAll('.option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    
-                    // Add selection to clicked option
-                    this.classList.add('selected');
-                    
-                    // Store answer
-                    answers[questionNum] = this.dataset.value;
-                    
-                    // Enable next button
-                    document.getElementById('nextBtn').disabled = false;
-                }
-            });
-        });
-
-        // Handle checkbox options for question 9
+        // Handle checkbox selections for all questions
         document.querySelectorAll('.checkbox-option').forEach(option => {
             option.addEventListener('click', function(e) {
                 // Toggle checkbox if clicking on the div (not the checkbox itself)
@@ -485,17 +569,10 @@
                 }
                 
                 // Toggle visual state
-                this.classList.toggle('checked');
+                this.classList.toggle('checked', this.querySelector('input[type="checkbox"]').checked);
                 
-                // Store answers for checkboxes
-                const checkedBoxes = document.querySelectorAll('.checkbox-option input:checked');
-                if (checkedBoxes.length > 0) {
-                    answers['9'] = Array.from(checkedBoxes).map(cb => cb.value);
-                    document.getElementById('nextBtn').disabled = false;
-                } else {
-                    delete answers['9'];
-                    document.getElementById('nextBtn').disabled = true;
-                }
+                // Store answers and enable/disable next button
+                updateAnswers();
             });
         });
 
@@ -508,8 +585,22 @@
                 } else {
                     parent.classList.remove('checked');
                 }
+                updateAnswers();
             });
         });
+
+        function updateAnswers() {
+            const questionSection = document.querySelector(`.question-section[data-question="${currentQuestion}"]`);
+            const checkedBoxes = questionSection.querySelectorAll('input[type="checkbox"]:checked');
+            
+            if (checkedBoxes.length > 0) {
+                answers[currentQuestion] = Array.from(checkedBoxes).map(cb => cb.value);
+                document.getElementById('nextBtn').disabled = false;
+            } else {
+                delete answers[currentQuestion];
+                document.getElementById('nextBtn').disabled = true;
+            }
+        }
 
         function nextQuestion() {
             if (currentQuestion < totalQuestions) {
@@ -582,30 +673,29 @@
 
         function checkExistingAnswer() {
             const nextBtn = document.getElementById('nextBtn');
+            const questionSection = document.querySelector(`.question-section[data-question="${currentQuestion}"]`);
             
             if (answers[currentQuestion]) {
                 nextBtn.disabled = false;
                 
-                if (currentQuestion === 9) {
-                    // Re-check checkboxes
-                    const savedAnswers = answers[9];
-                    document.querySelectorAll('.checkbox-option input').forEach(cb => {
-                        if (savedAnswers.includes(cb.value)) {
-                            cb.checked = true;
-                            cb.closest('.checkbox-option').classList.add('checked');
-                        }
-                    });
-                } else {
-                    // Re-select option
-                    const questionSection = document.querySelector(`.question-section[data-question="${currentQuestion}"]`);
-                    questionSection.querySelectorAll('.option').forEach(opt => {
-                        if (opt.dataset.value === answers[currentQuestion]) {
-                            opt.classList.add('selected');
-                        }
-                    });
-                }
+                // Re-check checkboxes
+                const savedAnswers = answers[currentQuestion];
+                questionSection.querySelectorAll('.checkbox-option input').forEach(cb => {
+                    if (savedAnswers.includes(cb.value)) {
+                        cb.checked = true;
+                        cb.closest('.checkbox-option').classList.add('checked');
+                    } else {
+                        cb.checked = false;
+                        cb.closest('.checkbox-option').classList.remove('checked');
+                    }
+                });
             } else {
                 nextBtn.disabled = true;
+                // Clear all checkboxes for this question
+                questionSection.querySelectorAll('.checkbox-option input').forEach(cb => {
+                    cb.checked = false;
+                    cb.closest('.checkbox-option').classList.remove('checked');
+                });
             }
         }
 
@@ -616,17 +706,22 @@
             // Hide navigation
             document.getElementById('navigation').style.display = 'none';
             
-            // Calculate score
+            // Calculate score (simplified for multiple selections)
             const score = calculateScore();
             
-            // Customize message based on score
+            // Customize message based on number of pain points selected
+            let totalSelections = 0;
+            for (let key in answers) {
+                totalSelections += answers[key].length;
+            }
+            
             let message = '';
-            if (score > 25) {
-                message = "Excellent! Your business is a perfect fit for AI automation. We can help you save 15+ hours per week and significantly reduce operational costs.";
-            } else if (score > 15) {
-                message = "Great match! AI automation can streamline your operations and help you focus on growing your business. Let's explore the best solutions for your needs.";
+            if (totalSelections > 20) {
+                message = "Excellent! Your business has many areas where AI automation can make a significant impact. We can help you save 15+ hours per week and significantly reduce operational costs.";
+            } else if (totalSelections > 10) {
+                message = "Great match! You've identified several key areas where AI automation can streamline your operations and help you focus on growing your business.";
             } else {
-                message = "AI can still benefit your business! Let's discuss simple, cost-effective solutions that match your current needs and budget.";
+                message = "AI can definitely benefit your business! Let's discuss targeted solutions that match your specific needs and budget.";
             }
             
             document.getElementById('resultsMessage').textContent = message;
@@ -639,14 +734,10 @@
         }
 
         function calculateScore() {
+            // Simplified scoring for multiple selections
             let score = 0;
             for (let key in answers) {
-                if (key !== '9') {
-                    score += parseInt(answers[key]) || 0;
-                } else {
-                    // Bonus points for using existing tools
-                    score += answers[key].length;
-                }
+                score += answers[key].length * 3; // 3 points per selection
             }
             return score;
         }
@@ -661,7 +752,7 @@
                 return;
             }
             
-            // Prepare data
+            // Prepare data with better formatting for multiple selections
             const quizData = {
                 name: name,
                 email: email,
@@ -669,99 +760,19 @@
                 score: calculateScore(),
                 answers: answers,
                 timestamp: new Date().toISOString(),
-                // Add descriptive labels for answers
                 details: {
-                    adminHours: getAnswerLabel(1, answers['1']),
-                    biggestFrustration: getAnswerLabel(2, answers['2']),
-                    clientInquiries: getAnswerLabel(3, answers['3']),
-                    automationPriority: getAnswerLabel(4, answers['4']),
-                    budget: getAnswerLabel(5, answers['5']),
-                    techComfort: getAnswerLabel(6, answers['6']),
-                    successMetric: getAnswerLabel(7, answers['7']),
-                    weeklyInteractions: getAnswerLabel(8, answers['8']),
-                    currentTools: answers['9'] || [],
-                    timeline: getAnswerLabel(10, answers['10'])
+                    adminHours: answers['1'] ? answers['1'].join(', ') : 'Not specified',
+                    biggestFrustration: answers['2'] ? answers['2'].join(', ') : 'Not specified',
+                    clientInquiries: answers['3'] ? answers['3'].join(', ') : 'Not specified',
+                    automationPriority: answers['4'] ? answers['4'].join(', ') : 'Not specified',
+                    budget: answers['5'] ? answers['5'].join(', ') : 'Not specified',
+                    techComfort: answers['6'] ? answers['6'].join(', ') : 'Not specified',
+                    successMetric: answers['7'] ? answers['7'].join(', ') : 'Not specified',
+                    weeklyInteractions: answers['8'] ? answers['8'].join(', ') : 'Not specified',
+                    currentTools: answers['9'] ? answers['9'].join(', ') : 'Not specified',
+                    timeline: answers['10'] ? answers['10'].join(', ') : 'Not specified'
                 }
             };
             
             // Send to Google Apps Script Web App
             const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQ-4yNigliIz2gdiiNh0LpfO9BQ_oKNLupyVFHzelKEWsHmTsdG3h5NJlXdIEzlVE/exec';
-            
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(quizData)
-            }).then(() => {
-                console.log('Data sent successfully');
-            }).catch((error) => {
-                console.error('Error:', error);
-            });
-            
-            // Option 2: Send to Zapier Webhook (FREE tier available)
-            // Uncomment and add your Zapier webhook URL:
-            /*
-            fetch('https://hooks.zapier.com/hooks/catch/YOUR_WEBHOOK_ID/', {
-                method: 'POST',
-                body: JSON.stringify(quizData)
-            });
-            */
-            
-            // Option 3: Send to Make.com (formerly Integromat) Webhook
-            // Uncomment and add your Make webhook URL:
-            /*
-            fetch('https://hook.eu1.make.com/YOUR_WEBHOOK_ID', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(quizData)
-            });
-            */
-            
-            // For now, just log the data and show success message
-            console.log('Quiz Submission:', quizData);
-            
-            // Show success message
-            document.getElementById('submitMessage').style.display = 'block';
-            document.querySelector('.cta-btn').style.display = 'none';
-            
-            // In production, you'd send this data to your backend
-            // For testing, you can see the data in the browser console (F12)
-        }
-        
-        function getAnswerLabel(questionNum, answerValue) {
-            const labels = {
-                1: ['Less than 5 hours', '5-10 hours', '10-20 hours', 'More than 20 hours'],
-                2: ['Answering repeated questions', 'Tracking client info', 'Managing appointments', 'Following up with leads'],
-                3: ['Phone and manual notes', 'Basic email', 'Online forms', 'Often miss inquiries'],
-                4: ['Email automation', 'Invoice reminders', 'Appointment scheduling', 'Data organization'],
-                5: ['Under R1,000', 'R1,000-R5,000', 'R5,000-R10,000', 'Over R10,000'],
-                6: ['Prefer current tools', 'Nervous but open', 'Willing to learn', 'Love new tools'],
-                7: ['More time for growth', 'Better satisfaction', 'Reduced costs', 'All of the above'],
-                8: ['Under 20', '20-50', '50-100', 'Over 100'],
-                10: ['Just exploring', 'Within 6 months', 'Within 1-3 months', 'Immediately']
-            };
-            
-            if (labels[questionNum] && answerValue) {
-                return labels[questionNum][parseInt(answerValue) - 1];
-            }
-            return answerValue;
-        }
-
-        function scheduleConsultation() {
-            // This is where you'd integrate with your scheduling system
-            alert('Thank you for your interest! In a real implementation, this would redirect to your scheduling system or contact form.');
-            
-            // You could also collect email here and send results
-            console.log('Quiz Answers:', answers);
-            console.log('Score:', calculateScore());
-        }
-
-        // Initialize progress bar
-        updateProgressBar();
-    </script>
-</body>
-</html>
