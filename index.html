@@ -3,746 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oak Tree AI - Discovery Quiz</title>
+    <title>Oak Tree AI | Readiness Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
         }
-
-        .quiz-container {
+        .quiz-card {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 600px;
-            width: 100%;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
+            border-radius: 1.5rem; /* 24px */
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            transition: all 0.3s ease-in-out;
         }
-
-        .quiz-header {
-            text-align: center;
-            margin-bottom: 30px;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
         }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .tagline {
-            color: #6b7280;
-            font-size: 16px;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #e5e7eb;
-            border-radius: 3px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-            width: 10%;
-        }
-
-        .question-section {
-            display: none;
-        }
-
-        .question-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .question-number {
-            color: #667eea;
-            font-size: 14px;
+        .option-label {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-label:hover {
+            background-color: #eef2ff; /* Tailwind indigo-50 */
+            border-color: #818cf8; /* Tailwind indigo-400 */
+        }
+        input:checked + .option-label {
+            background-color: #e0e7ff; /* Tailwind indigo-100 */
+            border-color: #6366f1; /* Tailwind indigo-500 */
+            color: #4338ca; /* Tailwind indigo-800 */
             font-weight: 600;
-            margin-bottom: 10px;
         }
-
-        .question-text {
-            font-size: 20px;
-            color: #1f2937;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .instruction-text {
-            font-size: 14px;
-            color: #667eea;
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            color: #4b5563;
-        }
-
-        .checkbox-wrapper:hover {
-            border-color: #667eea;
-            background: #f9fafb;
-            transform: translateX(5px);
-        }
-
-        .checkbox-wrapper.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea15, #764ba215);
-            color: #1f2937;
-            font-weight: 500;
-        }
-
-        .checkbox-wrapper input[type="checkbox"] {
-            margin-right: 12px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #667eea;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 15px;
-        }
-
-        .nav-btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .prev-btn {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
-
-        .prev-btn:hover {
-            background: #e5e7eb;
-        }
-
-        .next-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            flex-grow: 1;
-        }
-
-        .next-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .next-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .results-section {
-            display: none;
-            text-align: center;
-        }
-
-        .results-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .success-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
-
-        .results-title {
-            font-size: 28px;
-            color: #1f2937;
-            margin-bottom: 15px;
-        }
-
-        .results-message {
-            font-size: 18px;
-            color: #6b7280;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #667eea15, #764ba215);
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 25px;
-        }
-
-        .cta-title {
-            font-size: 20px;
-            color: #1f2937;
-            margin-bottom: 15px;
-        }
-
-        input[type="text"], input[type="email"], input[type="tel"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        .cta-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 14px 35px;
-            border: none;
-            border-radius: 10px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        #submitMessage {
-            margin-top: 15px;
-            color: #10b981;
-            display: none;
+        input:checked + .option-label .custom-checkbox {
+            background-color: #6366f1; /* Tailwind indigo-500 */
+            border-color: #4f46e5; /* Tailwind indigo-600 */
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
         }
     </style>
 </head>
-<body>
-    <div class="quiz-container">
-        <div class="quiz-header">
-            <div class="logo">🌳 Oak Tree AI</div>
-            <div class="tagline">Let's find out how AI can transform your business in just 2 minutes!</div>
+<body class="flex items-center justify-center min-h-screen p-4 bg-gray-100">
+
+    <div id="quiz-container" class="quiz-card w-full max-w-3xl">
+        <!-- Header -->
+        <div class="p-8 text-center bg-gradient-to-br from-indigo-500 to-purple-600 rounded-t-3xl">
+            <h1 class="text-3xl font-bold text-white">🌳 Oak Tree AI Readiness Quiz</h1>
+            <p class="mt-2 text-indigo-200">Discover your business's AI potential in just 2 minutes!</p>
         </div>
 
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressBar"></div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 h-2.5">
+            <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-purple-600 h-2.5" style="width: 0%; transition: width 0.5s ease;"></div>
         </div>
 
-        <!-- Question 1 -->
-        <div class="question-section active" data-question="1">
-            <div class="question-number">Question 1 of 10</div>
-            <div class="question-text">How many hours per week does your team spend on repetitive admin tasks?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Less than 5 hours">
-                    <span>Less than 5 hours</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="5-10 hours">
-                    <span>5-10 hours</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="10-20 hours">
-                    <span>10-20 hours</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="More than 20 hours">
-                    <span>More than 20 hours</span>
-                </label>
-            </div>
+        <!-- Quiz Body -->
+        <div id="quiz-body" class="p-8 sm:p-12">
+            <!-- Questions will be injected here by JavaScript -->
         </div>
 
-        <!-- Question 2 -->
-        <div class="question-section" data-question="2">
-            <div class="question-number">Question 2 of 10</div>
-            <div class="question-text">What's your biggest daily frustration?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Answering repeated questions">
-                    <span>Answering the same customer questions repeatedly</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Tracking client info">
-                    <span>Keeping track of client information across different platforms</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Managing appointments">
-                    <span>Managing appointments and schedules</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Following up">
-                    <span>Following up with leads and customers</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 3 -->
-        <div class="question-section" data-question="3">
-            <div class="question-number">Question 3 of 10</div>
-            <div class="question-text">How do you currently handle new client inquiries?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Phone and manual notes">
-                    <span>Phone calls and manual note-taking</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Basic email">
-                    <span>Basic email responses</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Online forms">
-                    <span>Online forms (Google Forms, etc.)</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Facebook">
-                    <span>Facebook</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Instagram">
-                    <span>Instagram</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="WhatsApp">
-                    <span>WhatsApp</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Often miss inquiries">
-                    <span>We often miss inquiries</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 4 -->
-        <div class="question-section" data-question="4">
-            <div class="question-number">Question 4 of 10</div>
-            <div class="question-text">Which areas would save you the most time if automated?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Email automation">
-                    <span>Email responses and follow-ups</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Invoice reminders">
-                    <span>Invoice and payment reminders</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Appointment scheduling">
-                    <span>Appointment scheduling</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Data organization">
-                    <span>Customer data organization</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 5 -->
-        <div class="question-section" data-question="5">
-            <div class="question-number">Question 5 of 10</div>
-            <div class="question-text">What's your monthly budget for business tools and software?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Under R1,000">
-                    <span>Under R1,000</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="R1,000-R5,000">
-                    <span>R1,000 - R5,000</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="R5,000-R10,000">
-                    <span>R5,000 - R10,000</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Over R10,000">
-                    <span>Over R10,000</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 6 -->
-        <div class="question-section" data-question="6">
-            <div class="question-number">Question 6 of 10</div>
-            <div class="question-text">How comfortable is your team with learning new technology?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Very comfortable">
-                    <span>Very comfortable - we love new tools</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Somewhat comfortable">
-                    <span>Somewhat comfortable - willing to learn</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Nervous but open">
-                    <span>Nervous but open to simple solutions</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Prefer current tools">
-                    <span>Prefer to stick with what we know</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 7 -->
-        <div class="question-section" data-question="7">
-            <div class="question-number">Question 7 of 10</div>
-            <div class="question-text">What would success look like for you in 6 months?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="More time for growth">
-                    <span>More time to focus on growing the business</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Better satisfaction">
-                    <span>Better customer satisfaction</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Reduced costs">
-                    <span>Reduced operational costs</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="All of the above">
-                    <span>All of the above</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 8 -->
-        <div class="question-section" data-question="8">
-            <div class="question-number">Question 8 of 10</div>
-            <div class="question-text">How many customer interactions does your business handle weekly?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Under 20">
-                    <span>Under 20</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="20-50">
-                    <span>20-50</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="50-100">
-                    <span>50-100</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Over 100">
-                    <span>Over 100</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 9 -->
-        <div class="question-section" data-question="9">
-            <div class="question-number">Question 9 of 10</div>
-            <div class="question-text">Do you currently use any of these tools?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="WhatsApp Business">
-                    <span>WhatsApp Business</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Email marketing platform">
-                    <span>Email marketing platform</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="CRM system">
-                    <span>CRM system</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="None">
-                    <span>None of the above</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Question 10 -->
-        <div class="question-section" data-question="10">
-            <div class="question-number">Question 10 of 10</div>
-            <div class="question-text">When would you want to implement AI solutions?</div>
-            <div class="instruction-text">Select all that apply</div>
-            <div class="options">
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Immediately">
-                    <span>Immediately</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Within 1-3 months">
-                    <span>Within 1-3 months</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Within 6 months">
-                    <span>Within 6 months</span>
-                </label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" value="Just exploring">
-                    <span>Just exploring options</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Results Section -->
-        <div class="results-section" id="resultsSection">
-            <div class="success-icon">🎉</div>
-            <div class="results-title">Great News!</div>
-            <div class="results-message" id="resultsMessage">
-                Based on your answers, AI automation could save your business significant time and money!
-            </div>
-            
-            <div class="cta-section">
-                <div class="cta-title">Get Your Personalized AI Roadmap</div>
-                <div>
-                    <input type="text" id="userName" placeholder="Your Name">
-                    <input type="email" id="userEmail" placeholder="Your Email">
-                    <input type="tel" id="userPhone" placeholder="Your Phone (Optional)">
-                </div>
-                <button class="cta-btn" id="submitBtn">Get My Free AI Roadmap</button>
-                <div id="submitMessage">Thank you! We'll be in touch within 24 hours.</div>
-            </div>
-        </div>
-
-        <!-- Navigation -->
-        <div class="navigation" id="navigation">
-            <button class="nav-btn prev-btn" id="prevBtn" style="display: none;">Previous</button>
-            <button class="nav-btn next-btn" id="nextBtn" disabled>Next</button>
+        <!-- Footer / Navigation -->
+        <div class="px-8 py-6 bg-gray-50 rounded-b-3xl border-t border-gray-200 flex items-center justify-between">
+            <button id="prev-btn" class="px-6 py-2 font-semibold text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">Previous</button>
+            <button id="next-btn" class="px-8 py-2 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed">Next</button>
         </div>
     </div>
 
-    <script>
-        let currentQuestion = 1;
-        const totalQuestions = 10;
-        const answers = {};
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONFIGURATION ---
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3mqkzFq5FMvFbqagS2HupNTKYL0w-iHmI3XwkUYpRSNjbsfinXTZyZYmz6D1CktUI/exec';
 
-        // Initialize all event listeners when page loads
-        window.addEventListener('DOMContentLoaded', function() {
-            // Add event listeners to all checkboxes
-            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.addEventListener('change', handleCheckboxChange);
-            });
+        // --- QUIZ DATA ---
+        const quizData = [
+            // Question 1
+            {
+                question: "How many hours per week does your team spend on repetitive admin tasks?",
+                options: ["Less than 5 hours", "5-10 hours", "10-20 hours", "More than 20 hours"]
+            },
+            // Question 2
+            {
+                question: "What are your biggest daily frustrations?",
+                options: ["Answering the same customer questions repeatedly", "Keeping track of client information", "Managing appointments and schedules", "Following up with leads and customers"]
+            },
+            // Question 3
+            {
+                question: "How do you currently handle new client inquiries?",
+                options: ["Phone calls and manual note-taking", "Basic email responses", "Online forms (Google Forms, etc.)", "We often miss inquiries", "WhatsApp", "Facebook", "Instagram"]
+            },
+            // Question 4
+            {
+                question: "Which area would save you the most time if automated?",
+                options: ["Email responses and follow-ups", "Invoice and payment reminders", "Appointment scheduling", "Customer data organization"]
+            },
+            // Question 5
+            {
+                question: "What's your monthly budget for business tools and software?",
+                options: ["Under R1,000", "R1,000 - R5,000", "R5,000 - R10,000", "Over R10,000"]
+            },
+            // Question 6
+            {
+                question: "How comfortable is your team with learning new technology?",
+                options: ["Very comfortable - we love new tools", "Somewhat comfortable - willing to learn", "Nervous but open to simple solutions", "Prefer to stick with what we know"]
+            },
+            // Question 7
+            {
+                question: "What would success look like for you in 6 months?",
+                options: ["More time to focus on growing the business", "Better customer satisfaction", "Reduced operational costs", "All of the above"]
+            },
+            // Question 8
+            {
+                question: "How many customer interactions does your business handle weekly?",
+                options: ["Under 20", "20-50", "50-100", "Over 100"]
+            },
+            // Question 9
+            {
+                question: "Do you currently use any of these tools?",
+                options: ["WhatsApp Business", "Email marketing platform", "CRM system", "None of the above"]
+            },
+            // Question 10
+            {
+                question: "When would you want to implement AI solutions?",
+                options: ["Immediately", "Within 1-3 months", "Within 6 months", "Just exploring options"]
+            },
+        ];
 
-            // Add event listeners to navigation buttons
-            document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-            document.getElementById('prevBtn').addEventListener('click', previousQuestion);
-            document.getElementById('submitBtn').addEventListener('click', submitResults);
+        // --- DOM ELEMENTS ---
+        const quizBody = document.getElementById('quiz-body');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        
+        // --- STATE MANAGEMENT ---
+        let currentQuestionIndex = 0;
+        const userAnswers = {};
 
-            // Initialize progress bar
-            updateProgressBar();
-        });
-
-        function handleCheckboxChange() {
-            const wrapper = this.closest('.checkbox-wrapper');
+        // --- FUNCTIONS ---
+        const renderQuestion = () => {
+            quizBody.innerHTML = ''; // Clear previous content
             
-            // Update visual state
-            if (this.checked) {
-                wrapper.classList.add('selected');
-            } else {
-                wrapper.classList.remove('selected');
+            let content;
+
+            if (currentQuestionIndex < quizData.length) { // Render a question
+                const questionData = quizData[currentQuestionIndex];
+                const questionId = currentQuestionIndex + 1;
+                const savedAnswers = userAnswers[questionId] || [];
+
+                const optionsHtml = questionData.options.map((option, index) => `
+                    <div>
+                        <input type="checkbox" id="q${questionId}_o${index}" value="${option}" class="absolute opacity-0" name="question-${questionId}" ${savedAnswers.includes(option) ? 'checked' : ''}>
+                        <label for="q${questionId}_o${index}" class="option-label flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer text-gray-700">
+                            <span class="custom-checkbox w-6 h-6 rounded-md border-2 border-gray-300 mr-4 transition-colors"></span>
+                            ${option}
+                        </label>
+                    </div>
+                `).join('');
+
+                content = `
+                    <div class="fade-in">
+                        <p class="text-sm font-semibold text-indigo-600">Question ${questionId} of ${quizData.length}</p>
+                        <h2 class="text-2xl font-bold mt-2 mb-6 text-gray-800">${questionData.question}</h2>
+                        <div class="space-y-4">${optionsHtml}</div>
+                    </div>
+                `;
+            } else if (currentQuestionIndex === quizData.length) { // Render contact form
+                content = `
+                    <div class="fade-in text-center">
+                        <h2 class="text-2xl font-bold text-gray-800">Almost There!</h2>
+                        <p class="mt-2 mb-8 text-gray-600">Enter your details to receive your personalized AI readiness insights.</p>
+                        <div class="space-y-4 text-left">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                <input type="text" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                                <input type="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone (Optional)</label>
+                                <input type="tel" id="phone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else { // Render submission/final screen
+                content = `
+                    <div class="fade-in text-center">
+                        <div id="loading-state">
+                            <h2 class="text-2xl font-bold text-gray-800">Analyzing your results...</h2>
+                            <p class="mt-2 text-gray-600">This will just take a moment.</p>
+                        </div>
+                        <div id="success-state" style="display: none;">
+                             <h2 class="text-3xl font-bold text-green-600">Thank You!</h2>
+                            <p class="mt-4 text-gray-700">We've received your assessment. A confirmation email with your AI readiness insights is on its way to your inbox.</p>
+                            <p class="mt-4 text-sm text-gray-500"><strong>Please check your Spam or Junk folder if you don't see it in the next 5 minutes.</strong></p>
+                        </div>
+                    </div>
+                `;
             }
-            
-            // Update answers for current question
-            const questionSection = document.querySelector(`.question-section[data-question="${currentQuestion}"]`);
-            const checkedBoxes = questionSection.querySelectorAll('input[type="checkbox"]:checked');
-            
-            if (checkedBoxes.length > 0) {
-                answers[currentQuestion] = Array.from(checkedBoxes).map(cb => cb.value);
-                document.getElementById('nextBtn').disabled = false;
-            } else {
-                delete answers[currentQuestion];
-                document.getElementById('nextBtn').disabled = true;
-            }
-        }
+            quizBody.innerHTML = content;
+            addInputListeners();
+            updateUI();
+        };
 
-        function nextQuestion() {
-            if (currentQuestion < totalQuestions) {
-                document.querySelector(`.question-section[data-question="${currentQuestion}"]`).classList.remove('active');
-                currentQuestion++;
-                document.querySelector(`.question-section[data-question="${currentQuestion}"]`).classList.add('active');
-                updateProgressBar();
-                updateNavigation();
-                restoreAnswers();
-            } else {
-                showResults();
-            }
-        }
+        const updateUI = () => {
+            // Update progress bar
+            const progress = (currentQuestionIndex / (quizData.length)) * 100;
+            progressBar.style.width = `${progress}%`;
 
-        function previousQuestion() {
-            if (currentQuestion > 1) {
-                document.querySelector(`.question-section[data-question="${currentQuestion}"]`).classList.remove('active');
-                currentQuestion--;
-                document.querySelector(`.question-section[data-question="${currentQuestion}"]`).classList.add('active');
-                updateProgressBar();
-                updateNavigation();
-                restoreAnswers();
-            }
-        }
-
-        function updateProgressBar() {
-            const progress = (currentQuestion / totalQuestions) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-
-        function updateNavigation() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
+            // Update buttons
+            prevBtn.style.visibility = currentQuestionIndex > 0 ? 'visible' : 'hidden';
             
-            prevBtn.style.display = currentQuestion > 1 ? 'block' : 'none';
-            
-            if (currentQuestion === totalQuestions) {
-                nextBtn.textContent = 'Get Results';
+            if(currentQuestionIndex === quizData.length) {
+                nextBtn.textContent = 'Get My AI Roadmap';
             } else {
                 nextBtn.textContent = 'Next';
             }
             
-            // Check if current question has answers
-            nextBtn.disabled = !answers[currentQuestion];
-        }
-
-        function restoreAnswers() {
-            const questionSection = document.querySelector(`.question-section[data-question="${currentQuestion}"]`);
-            const checkboxes = questionSection.querySelectorAll('input[type="checkbox"]');
-            
-            checkboxes.forEach(checkbox => {
-                const wrapper = checkbox.closest('.checkbox-wrapper');
-                if (answers[currentQuestion] && answers[currentQuestion].includes(checkbox.value)) {
-                    checkbox.checked = true;
-                    wrapper.classList.add('selected');
-                } else {
-                    checkbox.checked = false;
-                    wrapper.classList.remove('selected');
-                }
-            });
-            
-            // Enable/disable next button based on restored answers
-            document.getElementById('nextBtn').disabled = !answers[currentQuestion];
-        }
-
-        function showResults() {
-            document.querySelector(`.question-section[data-question="${currentQuestion}"]`).classList.remove('active');
-            document.getElementById('navigation').style.display = 'none';
-            
-            const totalSelections = Object.values(answers).reduce((sum, arr) => sum + arr.length, 0);
-            
-            let message = '';
-            if (totalSelections > 20) {
-                message = "Excellent! Your business has many areas where AI automation can make a significant impact. We can help you save 15+ hours per week and significantly reduce operational costs.";
-            } else if (totalSelections > 10) {
-                message = "Great match! You've identified several key areas where AI automation can streamline your operations and help you focus on growing your business.";
+            if(currentQuestionIndex > quizData.length) {
+                 prevBtn.style.display = 'none';
+                 nextBtn.style.display = 'none';
             } else {
-                message = "AI can definitely benefit your business! Let's discuss targeted solutions that match your specific needs and budget.";
+                 prevBtn.style.display = 'inline-block';
+                 nextBtn.style.display = 'inline-block';
             }
-            
-            document.getElementById('resultsMessage').textContent = message;
-            document.getElementById('resultsSection').classList.add('active');
-            document.getElementById('progressBar').style.width = '100%';
-        }
 
-        function submitResults() {
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const phone = document.getElementById('userPhone').value;
-            
-            if (!name || !email) {
-                alert('Please enter your name and email to receive your personalized AI roadmap.');
-                return;
+            validateStep();
+        };
+        
+        const validateStep = () => {
+             if (currentQuestionIndex < quizData.length) {
+                const checked = quizBody.querySelector('input[type="checkbox"]:checked');
+                nextBtn.disabled = !checked;
+            } else if (currentQuestionIndex === quizData.length) {
+                const name = document.getElementById('name')?.value || '';
+                const email = document.getElementById('email')?.value || '';
+                const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                nextBtn.disabled = !(name.trim() && isEmailValid);
             }
+        };
+
+        const addInputListeners = () => {
+            const inputs = quizBody.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('change', validateStep);
+                input.addEventListener('input', validateStep);
+            });
+        };
+
+        const handleSubmit = async () => {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             
-            const quizData = {
-                name: name,
-                email: email,
-                phone: phone,
-                score: Object.values(answers).reduce((sum, arr) => sum + arr.length, 0) * 3,
-                answers: answers,
+            currentQuestionIndex++;
+            renderQuestion(); // Renders the loading state
+
+            // Simple scoring
+            let score = 0;
+            Object.values(userAnswers).forEach(answerArray => {
+                score += answerArray.length;
+            });
+
+            const payload = {
+                name, email, phone, score,
+                answers: userAnswers,
                 timestamp: new Date().toISOString(),
-                details: {
-                    adminHours: answers['1'] ? answers['1'].join(', ') : 'Not specified',
-                    biggestFrustration: answers['2'] ? answers['2'].join(', ') : 'Not specified',
-                    clientInquiries: answers['3'] ? answers['3'].join(', ') : 'Not specified',
-                    automationPriority: answers['4'] ? answers['4'].join(', ') : 'Not specified',
-                    budget: answers['5'] ? answers['5'].join(', ') : 'Not specified',
-                    techComfort: answers['6'] ? answers['6'].join(', ') : 'Not specified',
-                    successMetric: answers['7'] ? answers['7'].join(', ') : 'Not specified',
-                    weeklyInteractions: answers['8'] ? answers['8'].join(', ') : 'Not specified',
-                    currentTools: answers['9'] ? answers['9'].join(', ') : 'Not specified',
-                    timeline: answers['10'] ? answers['10'].join(', ') : 'Not specified'
+                details: { // This structure matches the Google Script
+                    adminHours: userAnswers['1'] ? userAnswers['1'].join(', ') : 'N/A',
+                    biggestFrustration: userAnswers['2'] ? userAnswers['2'].join(', ') : 'N/A',
+                    clientInquiries: userAnswers['3'] ? userAnswers['3'].join(', ') : 'N/A',
+                    automationPriority: userAnswers['4'] ? userAnswers['4'].join(', ') : 'N/A',
+                    budget: userAnswers['5'] ? userAnswers['5'].join(', ') : 'N/A',
+                    techComfort: userAnswers['6'] ? userAnswers['6'].join(', ') : 'N/A',
+                    successMetric: userAnswers['7'] ? userAnswers['7'].join(', ') : 'N/A',
+                    weeklyInteractions: userAnswers['8'] ? userAnswers['8'].join(', ') : 'N/A',
+                    currentTools: userAnswers['9'] ? userAnswers['9'] : [],
+                    timeline: userAnswers['10'] ? userAnswers['10'].join(', ') : 'N/A',
                 }
             };
             
-            // Send to Google Apps Script
-            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3mqkzFq5FMvFbqagS2HupNTKYL0w-iHmI3XwkUYpRSNjbsfinXTZyZYmz6D1CktUI/exec;
-            
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(quizData)
-            }).then(() => {
-                console.log('Data sent successfully');
-            }).catch((error) => {
-                console.error('Error:', error);
-            });
-            
-            // Show success message
-            document.getElementById('submitMessage').style.display = 'block';
-            document.getElementById('submitBtn').style.display = 'none';
-            
-            console.log('Quiz Submission:', quizData);
-        }
-    </script>
+            try {
+                // Using 'no-cors' mode - we send the data but can't read the response.
+                await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    redirect: 'follow',
+                });
+                // Assume success and show the final screen
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('success-state').style.display = 'block';
+
+            } catch(error) {
+                console.error('Submission Error:', error);
+                alert('There was an error submitting your quiz. Please try again or contact us directly.');
+                // Go back to form if submission fails
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        };
+
+        // --- EVENT LISTENERS ---
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < quizData.length) {
+                // Save answers
+                const questionId = currentQuestionIndex + 1;
+                const checkedBoxes = quizBody.querySelectorAll(`input[name="question-${questionId}"]:checked`);
+                userAnswers[questionId] = Array.from(checkedBoxes).map(cb => cb.value);
+                
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                handleSubmit();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        });
+
+        // --- INITIAL RENDER ---
+        renderQuestion();
+    });
+</script>
+
 </body>
 </html>
