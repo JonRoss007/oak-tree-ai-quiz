@@ -44,21 +44,6 @@
             border-color: #4f46e5; /* Tailwind indigo-600 */
             background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
         }
-        #roadmap-content h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #1e3a8a; /* Tailwind blue-800 */
-        }
-        #roadmap-content ul {
-            list-style-type: disc;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        #roadmap-content li {
-            margin-bottom: 0.5rem;
-        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 bg-gray-100">
@@ -91,8 +76,6 @@
     document.addEventListener('DOMContentLoaded', () => {
         // --- CONFIGURATION ---
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3mqkzFq5FMvFbqagS2HupNTKYL0w-iHmI3XwkUYpRSNjbsfinXTZyZYmz6D1CktUI/exec';
-        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent';
-        const GEMINI_API_KEY = ''; // API key is handled by the environment, leave blank.
 
         // --- QUIZ DATA ---
         const quizData = [
@@ -221,14 +204,13 @@
                 content = `
                     <div class="fade-in text-center">
                         <div id="loading-state">
-                            <h2 class="text-2xl font-bold text-gray-800">✨ Generating your Personal AI Roadmap...</h2>
-                            <p class="mt-2 text-gray-600">Our AI is analyzing your answers to create a custom plan. This will just take a moment.</p>
+                            <h2 class="text-2xl font-bold text-gray-800">Submitting your assessment...</h2>
+                            <p class="mt-2 text-gray-600">This will just take a moment.</p>
                         </div>
-                        <div id="success-state" style="display: none;" class="text-left">
-                             <h2 class="text-3xl font-bold text-green-600 text-center">Here is Your AI Roadmap!</h2>
-                            <p class="mt-2 mb-6 text-gray-600 text-center">Based on your answers, here are some key areas where AI can make an immediate impact on your business.</p>
-                            <div id="roadmap-content" class="p-6 bg-gray-50 rounded-lg border"></div>
-                            <p class="mt-6 text-center text-gray-700">A copy of this, along with our AI Roadmap PDF, has been sent to your inbox.</p>
+                        <div id="success-state" style="display: none;">
+                             <h2 class="text-3xl font-bold text-green-600">Thank You!</h2>
+                            <p class="mt-4 text-gray-700">We've received your assessment. A confirmation email with your AI readiness insights is on its way to your inbox.</p>
+                            <p class="mt-4 text-sm text-gray-500"><strong>Please check your Spam or Junk folder if you don't see it in the next 5 minutes.</strong></p>
                         </div>
                     </div>
                 `;
@@ -245,7 +227,7 @@
             prevBtn.style.visibility = currentQuestionIndex > 0 ? 'visible' : 'hidden';
             
             if(currentQuestionIndex === quizData.length) {
-                nextBtn.innerHTML = '✨ Generate My Personal AI Roadmap';
+                nextBtn.innerHTML = 'Get My Insights';
             } else {
                 nextBtn.textContent = 'Next';
             }
@@ -281,78 +263,14 @@
             });
         };
 
-        const generateRoadmapPrompt = () => {
-            let summary = "A potential client, a small business owner in South Africa, has completed a readiness quiz. Based on their answers, generate a brief, personalized AI roadmap. \n\n";
-            quizData.forEach((q, index) => {
-                const questionId = index + 1;
-                const answer = userAnswers[questionId] ? userAnswers[questionId].join(', ') : 'Not answered';
-                summary += `- ${q.question}: ${answer}\n`;
-            });
-
-            return summary;
-        };
-        
-        const simpleMarkdownToHtml = (text) => {
-            // Converts ### headers to h3 tags
-            text = text.replace(/### (.*)/g, '<h3 class="text-xl font-bold mb-2 mt-4 text-gray-800">$1</h3>');
-            // Converts * list items to li tags
-            text = text.replace(/\* (.*)/g, '<li class="ml-5 list-disc">$1</li>');
-            // Wraps list items in ul tags
-            text = text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
-             // Converts bold text **text** to <strong>
-            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            return text;
-        };
-
-        const callGeminiAPI = async (prompt) => {
-            const systemInstruction = "You are an expert AI consultant for small and medium businesses in South Africa, operating as 'Oak Tree AI'. Your tone is encouraging, professional, and practical. You provide actionable advice, avoiding overly technical jargon. Your goal is to show the business owner the potential of AI and encourage them to book a consultation. Structure your response in Markdown with sections for 'Key Opportunities', 'Recommended First Steps', 'A Note on Your Budget & Timeline', and 'Your Next Step with Oak Tree AI'. Use ### for headings.";
-            
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                systemInstruction: { parts: [{ text: systemInstruction }] },
-            };
-
-            try {
-                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) {
-                    throw new Error(`API call failed with status: ${response.status}`);
-                }
-                const result = await response.json();
-                return result.candidates?.[0]?.content?.parts?.[0]?.text || "We couldn't generate a roadmap at this time, but our team will review your answers and be in touch shortly.";
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                return "We encountered an issue while generating your personalized roadmap. Our team has received your submission and will create a manual report for you. Please expect it in your inbox within 24 hours.";
-            }
-        };
-
-
         const handleSubmit = async () => {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
-            
+
             currentQuestionIndex++;
             renderQuestion(); // Renders the loading state
 
-            // --- ✨ GEMINI API CALL ---
-            const prompt = generateRoadmapPrompt();
-            const roadmapText = await callGeminiAPI(prompt);
-            const roadmapHtml = simpleMarkdownToHtml(roadmapText);
-            
-            // Display the roadmap
-            const roadmapContent = document.getElementById('roadmap-content');
-            if (roadmapContent) {
-                roadmapContent.innerHTML = roadmapHtml;
-            }
-            document.getElementById('loading-state').style.display = 'none';
-            document.getElementById('success-state').style.display = 'block';
-
-
-            // --- SEND DATA TO GOOGLE SCRIPT (in background) ---
             let score = 0;
             Object.values(userAnswers).forEach(answerArray => score += answerArray.length);
 
@@ -367,17 +285,24 @@
             };
             
             try {
-                await fetch(GOOGLE_SCRIPT_URL, {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     cache: 'no-cache',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                
+                // Show success screen after sending
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('success-state').style.display = 'block';
+
             } catch(error) {
-                console.error('Google Script Submission Error:', error);
-                // The user has already seen their roadmap, so we don't need to show an error here.
-                // The lead data just might not save, which is a recoverable issue.
+                console.error('Submission Error:', error);
+                alert('There was an error submitting your quiz. Please try again or contact us directly.');
+                // Go back to form if submission fails
+                currentQuestionIndex--;
+                renderQuestion();
             }
         };
 
