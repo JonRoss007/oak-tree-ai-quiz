@@ -94,7 +94,7 @@
                 question: "How do you currently handle new client inquiries?",
                 options: ["Phone calls and manual note-taking", "Basic email responses", "Online forms (Google Forms, etc.)", "We often miss inquiries", "WhatsApp", "Facebook", "Instagram"]
             },
-            // Question 4 (UPDATED)
+            // Question 4
             {
                 question: "Which area would save you the most time if automated?",
                 options: ["Email responses and follow-ups", "Invoice and payment reminders", "Appointment scheduling", "Customer data organization", "Client intake form/order form", "Interactive Progress reports for client/teams"]
@@ -214,6 +214,8 @@
             // Update progress bar
             const progress = (currentQuestionIndex / (quizData.length)) * 100;
             progressBar.style.width = `${progress}%`;
+            progressBar.style.display = currentQuestionIndex > quizData.length ? 'none' : 'block';
+
 
             // Update buttons
             prevBtn.style.visibility = currentQuestionIndex > 0 ? 'visible' : 'hidden';
